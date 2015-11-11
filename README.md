@@ -11,6 +11,6 @@ Requirements:
 
 How to run:
 
-    git clone "repo url here"
+    git clone https://github.com/LBPeraza/Pygame-Asteroids.git
     cd Pygame-Asßteroids
     python[3] asteroids.py
