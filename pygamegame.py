@@ -13,35 +13,31 @@ use this code in your term project if you want
     in case you don't need to update the entire display every frame (then you
     should use pygame.display.update(Rect) instead)
 '''
-
-
 import pygame
 
 
 class PygameGame(object):
 
     def init(self):
-        print("Initializing the game...")
+        pass
 
     def mousePressed(self, x, y):
-        print("Clicked the mouse at (%d, %d)" % (x, y))
+        pass
 
     def mouseReleased(self, x, y):
-        print("Released the mouse at (%d, %d)" % (x, y))
+        pass
 
     def mouseMotion(self, x, y):
-        print("The mouse moved to (%d, %d)" % (x, y))
+        pass
 
     def mouseDrag(self, x, y):
-        print("The mouse was dragged to (%d, %d)" % (x, y))
+        pass
 
     def keyPressed(self, keyCode, modifier):
-        print("The key with code %d was pressed" % keyCode)
-        print("\tmodifier: %r" % modifier)
+        pass
 
     def keyReleased(self, keyCode, modifier):
-        print("The key with code %d was released" % keyCode)
-        print("\tmodifier: %r" % modifier)
+        pass
 
     def timerFired(self, dt):
         pass
@@ -51,16 +47,16 @@ class PygameGame(object):
 
     def isKeyPressed(self, key):
         ''' return whether a specific key is being held '''
-        return self.keys.get(key, False)
+        return self._keys.get(key, False)
 
     def __init__(self, width=600, height=400, fps=40, title="112 Pygame Game"):
         self.width = width
         self.height = height
         self.fps = fps
         self.title = title
+        pygame.init()
 
     def run(self):
-        pygame.init()
 
         clock = pygame.time.Clock()
         screen = pygame.display.set_mode((self.width, self.height))
@@ -68,7 +64,7 @@ class PygameGame(object):
         pygame.display.set_caption(self.title)
 
         # stores all the keys currently being held down
-        self.keys = dict()
+        self._keys = dict()
 
         # call game-specific initialization
         self.init()
@@ -88,13 +84,14 @@ class PygameGame(object):
                       event.buttons[0] == 1):
                     self.mouseDrag(*(event.pos))
                 elif event.type == pygame.KEYDOWN:
-                    self.keys[event.key] = True
+                    self._keys[event.key] = True
                     self.keyPressed(event.key, event.mod)
                 elif event.type == pygame.KEYUP:
-                    self.keys[event.key] = False
+                    self._keys[event.key] = False
                     self.keyReleased(event.key, event.mod)
                 elif event.type == pygame.QUIT:
                     playing = False
+            screen.fill((255, 255, 255))
             self.redrawAll(screen)
             pygame.display.flip()
 
