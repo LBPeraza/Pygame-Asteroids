@@ -1,13 +1,24 @@
+'''
+pygamegame.py
+created by Lukas Peraza
+ for 15-112 F15 Pygame Optional Lecture, 11/11/15
 
-import pygame as pg
+use this code in your term project if you want
+- CITE IT
+- you can modify it to your liking
+  - BUT STILL CITE IT
+
+- you should remove the print calls from any function you aren't using
+- you might want to move the pygame.display.flip() to your redrawAll function,
+    in case you don't need to update the entire display every frame (then you
+    should use pygame.display.update(Rect) instead)
+'''
+
+
+import pygame
 
 
 class PygameGame(object):
-
-    '''
-    a bunch of stuff is left out in this post, but you can see it in the Github
-    repo ()
-    '''
 
     def init(self):
         print("Initializing the game...")
@@ -42,16 +53,19 @@ class PygameGame(object):
         ''' return whether a specific key is being held '''
         return self.keys.get(key, False)
 
-    def __init__(self, width=600, height=400, fps=40):
+    def __init__(self, width=600, height=400, fps=40, title="112 Pygame Game"):
         self.width = width
         self.height = height
         self.fps = fps
+        self.title = title
 
     def run(self):
-        pg.init()
+        pygame.init()
 
-        clock = pg.time.Clock()
-        screen = pg.display.set_mode((self.width, self.height))
+        clock = pygame.time.Clock()
+        screen = pygame.display.set_mode((self.width, self.height))
+        # set the title of the window
+        pygame.display.set_caption(self.title)
 
         # stores all the keys currently being held down
         self.keys = dict()
@@ -62,26 +76,34 @@ class PygameGame(object):
         while playing:
             time = clock.tick(self.fps)
             self.timerFired(time)
-            for event in pg.event.get():
-                if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     self.mousePressed(*(event.pos))
-                elif event.type == pg.MOUSEBUTTONUP and event.button == 1:
+                elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                     self.mouseReleased(*(event.pos))
-                elif (event.type == pg.MOUSEMOTION and
+                elif (event.type == pygame.MOUSEMOTION and
                       event.buttons == (0, 0, 0)):
                     self.mouseMotion(*(event.pos))
-                elif (event.type == pg.MOUSEMOTION and
+                elif (event.type == pygame.MOUSEMOTION and
                       event.buttons[0] == 1):
                     self.mouseDrag(*(event.pos))
-                elif event.type == pg.KEYDOWN:
+                elif event.type == pygame.KEYDOWN:
                     self.keys[event.key] = True
                     self.keyPressed(event.key, event.mod)
-                elif event.type == pg.KEYUP:
+                elif event.type == pygame.KEYUP:
                     self.keys[event.key] = False
                     self.keyReleased(event.key, event.mod)
-                elif event.type == pg.QUIT:
+                elif event.type == pygame.QUIT:
                     playing = False
             self.redrawAll(screen)
-            pg.display.flip()
+            pygame.display.flip()
 
-        pg.quit()
+        pygame.quit()
+
+
+def main():
+    game = PygameGame()
+    game.run()
+
+if __name__ == '__main__':
+    main()
