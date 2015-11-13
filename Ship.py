@@ -2,6 +2,7 @@
 Ship.py
 
 implements the Ship class, which defines the player controllable ship
+Lukas Peraza, 2015 for 15-112 Pygame Lecture
 '''
 import pygame
 import math
