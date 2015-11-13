@@ -4,6 +4,8 @@ Pygame Asteroids
 ### Asteroids in Pygame for 15-112 Optional Lecture ###
 This code supplements my optional lecture from 11/12/15. In the lecture, we will create the game Asteroids in Pygame, assuming the knowledge of an above-average current 112 student.
 
+[Lecture notes](http://blog.lukasperaza.com/getting-started-with-pygame)
+
 ---
 Requirements:
 - Pygame
