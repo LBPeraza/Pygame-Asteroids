@@ -49,11 +49,12 @@ class PygameGame(object):
         ''' return whether a specific key is being held '''
         return self._keys.get(key, False)
 
-    def __init__(self, width=600, height=400, fps=40, title="112 Pygame Game"):
+    def __init__(self, width=600, height=400, fps=50, title="112 Pygame Game"):
         self.width = width
         self.height = height
         self.fps = fps
         self.title = title
+        self.bgColor = (255, 255, 255)
         pygame.init()
 
     def run(self):
@@ -91,7 +92,7 @@ class PygameGame(object):
                     self.keyReleased(event.key, event.mod)
                 elif event.type == pygame.QUIT:
                     playing = False
-            screen.fill((255, 255, 255))
+            screen.fill(self.bgColor)
             self.redrawAll(screen)
             pygame.display.flip()
 

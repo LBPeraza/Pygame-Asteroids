@@ -13,4 +13,4 @@ How to run:
 
     git clone https://github.com/LBPeraza/Pygame-Asteroids.git
     cd Pygame-Asteroids
-    python[3] asteroids.py
+    python[3] Game.py
