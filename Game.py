@@ -8,6 +8,7 @@ import pygame
 from Ship import Ship
 from Asteroid import Asteroid
 from Bullet import Bullet
+from Explosion import Explosion
 from pygamegame import PygameGame
 import random
 
@@ -17,7 +18,7 @@ class Game(PygameGame):
         self.bgColor = (0, 0, 0)
         Ship.init()
         ship = Ship(self.width / 2, self.height / 2)
-        self.shipGroup = pygame.sprite.Group(ship)
+        self.shipGroup = pygame.sprite.GroupSingle(ship)
 
         Asteroid.init()
         self.asteroids = pygame.sprite.Group()
@@ -28,19 +29,28 @@ class Game(PygameGame):
 
         self.bullets = pygame.sprite.Group()
 
+        Explosion.init()
+        self.explosions = pygame.sprite.Group()
+
     def keyPressed(self, code, mod):
         if code == pygame.K_SPACE:
             ship = self.shipGroup.sprites()[0]
             self.bullets.add(Bullet(ship.x, ship.y, ship.angle))
 
     def timerFired(self, dt):
-        self.shipGroup.update(self.isKeyPressed, self.width, self.height)
+        self.shipGroup.update(dt, self.isKeyPressed, self.width, self.height)
         self.asteroids.update(self.width, self.height)
         self.bullets.update(self.width, self.height)
+        self.explosions.update(dt)
 
-        if pygame.sprite.groupcollide(
-            self.shipGroup, self.asteroids, True, False,
-            pygame.sprite.collide_circle):
+        ship = self.shipGroup.sprite
+
+        if ((not ship.isInvincible()) and
+             pygame.sprite.groupcollide(
+             self.shipGroup, self.asteroids, False, False,
+             pygame.sprite.collide_circle)):
+
+            self.explosions.add(Explosion(ship.x, ship.y))
             self.shipGroup.add(Ship(self.width / 2, self.height / 2))
 
         for asteroid in pygame.sprite.groupcollide(
@@ -52,5 +62,6 @@ class Game(PygameGame):
         self.shipGroup.draw(screen)
         self.asteroids.draw(screen)
         self.bullets.draw(screen)
+        self.explosions.draw(screen)
 
 Game(800, 500).run()

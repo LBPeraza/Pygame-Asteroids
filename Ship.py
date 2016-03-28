@@ -15,7 +15,7 @@ class Ship(GameObject):
     @staticmethod
     def init():
         Ship.shipImage = pygame.transform.rotate(pygame.transform.scale(
-            pygame.image.load('images/spaceship.png').convert_alpha(),
+            pygame.image.load('images/spaceship.png').convert(),
             (60, 100)), -90)
 
     def __init__(self, x, y):
@@ -25,8 +25,13 @@ class Ship(GameObject):
         self.angleSpeed = 5
         self.angle = 0  # starts pointing straight up
         self.maxSpeed = 20
+        self.invincibleTime = 1500
+        self.timeAlive = 0
+        self.image.set_alpha(100)
 
-    def update(self, keysDown, screenWidth, screenHeight):
+    def update(self, dt, keysDown, screenWidth, screenHeight):
+        self.timeAlive += dt
+
         if keysDown(pygame.K_LEFT):
             self.angle += self.angleSpeed
 
@@ -42,6 +47,11 @@ class Ship(GameObject):
 
         super(Ship, self).update(screenWidth, screenHeight)
 
+        if self.isInvincible():
+            self.image.set_alpha(100)
+        else:
+            self.image.set_alpha(255)
+
     def thrust(self, power):
         angle = math.radians(self.angle)
         vx, vy = self.velocity
@@ -54,3 +64,6 @@ class Ship(GameObject):
             vx *= factor
             vy *= factor
         self.velocity = (vx, vy)
+
+    def isInvincible(self):
+        return self.timeAlive < self.invincibleTime
