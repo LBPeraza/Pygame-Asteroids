@@ -57,6 +57,16 @@ while playing:
         elif event.type == pygame.QUIT:
             playing = False
     dots.update(500, 500)
+
+    collisions = pygame.sprite.groupcollide(
+        dots, dots, False, False, pygame.sprite.collide_circle)
+    
+    for dot1 in collisions:
+        # only remove dot if it collided with more than itself
+        if len(collisions[dot1]) > 1:
+            dots.remove(collisions[dot1])
+
+
     screen.fill((255, 255, 255))
     dots.draw(screen)
     pygame.display.flip()
